@@ -6,7 +6,7 @@ const Button = ({clickevent, text}) => (
   </button>
 )
 
-const DisplayFeedback = ({text, value}) => (
+const StatisticLine = ({text, value}) => (
   <div>
     {text} {value}
   </div>
@@ -25,12 +25,12 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>statistics</h1>
-      <DisplayFeedback text = "good" value = {props.stats.good}/>
-      <DisplayFeedback text = "neutral" value = {props.stats.neutral}/>
-      <DisplayFeedback text = "bad" value = {props.stats.bad}/>
-      <DisplayFeedback text = "all" value = {props.stats.all}/>
-      <DisplayFeedback text = "average" value = {props.stats.average}/>
-      <DisplayFeedback text = "positive" value = {props.stats.positiveRate}/>
+      <StatisticLine text = "good" value = {props.stats.good}/>
+      <StatisticLine text = "neutral" value = {props.stats.neutral}/>
+      <StatisticLine text = "bad" value = {props.stats.bad}/>
+      <StatisticLine text = "all" value = {props.stats.all}/>
+      <StatisticLine text = "average" value = {props.stats.average}/>
+      <StatisticLine text = "positive" value = {props.stats.positiveRate}/>
     </div>
   )
 }
