@@ -1,10 +1,9 @@
 const Total = ({parts}) => {
-    let sum = 0
-    for (const part of parts) {
-        sum += part.exercises
-    }
+    const total = parts.reduce((sum, currentPart) => {
+        return (sum + currentPart.exercises)
+    }, 0)
 
-    return (<p><strong>total of {sum} exercises</strong></p>)
+    return (<p><strong>total of {total} exercises</strong></p>)
 }
 
 export default Total
