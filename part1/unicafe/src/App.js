@@ -7,9 +7,9 @@ const Button = ({clickevent, text}) => (
 )
 
 const StatisticLine = ({text, value}) => (
-  <div>
-    {text} {value}
-  </div>
+  <>
+    <td>{text} </td><td>{value}</td>
+  </>
 )
 
 // a proper place to define a component
@@ -25,12 +25,28 @@ const Statistics = (props) => {
   return (
     <div>
       <h1>statistics</h1>
-      <StatisticLine text = "good" value = {props.stats.good}/>
-      <StatisticLine text = "neutral" value = {props.stats.neutral}/>
-      <StatisticLine text = "bad" value = {props.stats.bad}/>
-      <StatisticLine text = "all" value = {props.stats.all}/>
-      <StatisticLine text = "average" value = {props.stats.average}/>
-      <StatisticLine text = "positive" value = {props.stats.positiveRate}/>
+      <table>
+        <tbody>
+          <tr>
+            <StatisticLine text = "good" value = {props.stats.good}/>
+          </tr>
+          <tr>
+            <StatisticLine text = "neutral" value = {props.stats.neutral}/>
+          </tr>
+          <tr>
+            <StatisticLine text = "bad" value = {props.stats.bad}/>
+          </tr>
+          <tr>
+            <StatisticLine text = "all" value = {props.stats.all}/>
+          </tr>
+          <tr>
+            <StatisticLine text = "average" value = {props.stats.average}/>
+          </tr>
+          <tr>
+            <StatisticLine text = "positive" value = {props.stats.positiveRate}/>
+          </tr>
+        </tbody>
+      </table>
     </div>
   )
 }
