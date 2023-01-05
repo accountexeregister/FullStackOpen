@@ -14,6 +14,14 @@ const DisplayFeedback = ({text, value}) => (
 
 // a proper place to define a component
 const Statistics = (props) => {
+  if (props.stats.good == 0 && props.stats.neutral == 0 && props.stats.bad == 0) {
+    return (
+      <div>
+        <h1>statistics</h1>
+        No feedback given
+      </div>
+    )
+  }
   return (
     <div>
       <h1>statistics</h1>
