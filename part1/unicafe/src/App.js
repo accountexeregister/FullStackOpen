@@ -12,6 +12,21 @@ const DisplayFeedback = ({text, value}) => (
   </div>
 )
 
+// a proper place to define a component
+const Statistics = (props) => {
+  return (
+    <div>
+      <h1>statistics</h1>
+      <DisplayFeedback text = "good" value = {props.stats.good}/>
+      <DisplayFeedback text = "neutral" value = {props.stats.neutral}/>
+      <DisplayFeedback text = "bad" value = {props.stats.bad}/>
+      <DisplayFeedback text = "all" value = {props.stats.all}/>
+      <DisplayFeedback text = "average" value = {props.stats.average}/>
+      <DisplayFeedback text = "positive" value = {props.stats.positiveRate}/>
+    </div>
+  )
+}
+
 const App = () => {
   // save clicks of each button to its own state
   const [good, setGood] = useState(0)
@@ -31,6 +46,14 @@ const App = () => {
   }
   positiveRate = positiveRate + " %"
 
+  const stats = {
+    good: good,
+    neutral: neutral,
+    bad: bad,
+    all: totalFeedbacks,
+    average: average,
+    positiveRate: positiveRate
+  }
 
   return (
     <div>
@@ -38,13 +61,7 @@ const App = () => {
       <Button clickevent = {() => setGood(good + 1)} text = "good" />
       <Button clickevent = {() => setNeutral(neutral + 1)} text = "neutral" />
       <Button clickevent = {() => setBad(bad + 1)} text = "bad" />
-      <h1>statistics</h1>
-      <DisplayFeedback text = "good" value = {good}/>
-      <DisplayFeedback text = "neutral" value = {neutral}/>
-      <DisplayFeedback text = "bad" value = {bad}/>
-      <DisplayFeedback text = "all" value = {totalFeedbacks}/>
-      <DisplayFeedback text = "average" value = {average}/>
-      <DisplayFeedback text = "positive" value = {positiveRate}/>
+      <Statistics stats = {stats} />
     </div>
   )
 }
