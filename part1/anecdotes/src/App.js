@@ -1,9 +1,39 @@
 import { useState } from 'react'
 
-const VoteButton = ({votes, setVotes, selected}) => {
-  const newVotes = [...votes]
-  newVotes[selected] = newVotes[selected] + 1
-  setVotes(newVotes)
+const DisplayAnecdote = ({anecdotes, votes, index}) => (
+  <>
+    <div>
+        {anecdotes[index]}
+    </div>
+    <div>
+      has {votes[index]} votes
+    </div>
+  </>
+)
+
+const DisplayDailyAnecdote = ({anecdotes, selected, votes, increaseVote, getRandomInt}) => (
+  <div>
+    <h1>Anecdote of the day</h1>
+    <DisplayAnecdote anecdotes={anecdotes} votes={votes} index={selected}/>
+    <button onClick = {increaseVote}>vote</button>
+    <button onClick = {getRandomInt}>next anecdote</button>
+  </div>
+)
+
+const DisplayHighestVoteAnecdote = ({anecdotes, votes}) => {
+  let highestVotesIndex = votes[0]
+  for (let i = 0; i < votes.length; i++) {
+    if (votes[highestVotesIndex] < votes[i]) {
+      highestVotesIndex = i
+    }
+  }
+
+  return (
+    <div>
+      <h1>Anecdote with the most votes</h1>
+      <DisplayAnecdote anecdotes={anecdotes} votes={votes} index={highestVotesIndex} />
+    </div>
+  )
 }
 
 const App = () => {
@@ -19,7 +49,6 @@ const App = () => {
    
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
-  console.log(votes)
 
   const getRandomInt = () => {
      setSelected(Math.floor(Math.random() * anecdotes.length))
@@ -32,16 +61,10 @@ const App = () => {
   }
 
   return (
-    <div>
-      <div>
-        {anecdotes[selected]}
-      </div>
-      <div>
-        has {votes[selected]} votes
-      </div>
-      <button onClick = {increaseVote}>vote</button>
-      <button onClick = {getRandomInt}>next anecdote</button>
-    </div>
+    <>
+      <DisplayDailyAnecdote anecdotes={anecdotes} selected={selected} votes={votes} increaseVote={increaseVote} getRandomInt={getRandomInt}/>
+      <DisplayHighestVoteAnecdote anecdotes={anecdotes} votes={votes} />
+    </>
   )
 }
 
