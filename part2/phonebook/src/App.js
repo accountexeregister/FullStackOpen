@@ -12,6 +12,12 @@ const App = () => {
 
   const updatePersons = (event) => {
     event.preventDefault()
+    // Checks if persons already has person with name submitted by form
+    const hasPersonWithName = !!(persons.find(person => person.name === newName))
+    if (hasPersonWithName) {
+      alert(`${newName} is already added to the phonebook`)
+      return
+    }
     const newPerson = {
       name: newName
     }
