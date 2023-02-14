@@ -11,6 +11,7 @@ const Country = ({country}) => (
         <h2>languages:</h2>
         <Languages country={country} />
         <Flag country={country} />
+        <h2>Weather in {country.capital.toString()}</h2>
     </div>
 )
 
