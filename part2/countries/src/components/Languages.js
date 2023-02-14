@@ -6,7 +6,6 @@ const printLanguages = (country) => {
         languageArray = languageArray.concat(country.languages[language])
     }
 
-    console.log(languageArray)
     return languageArray.map(language => <Language key={language} language={language} />)
 }
 

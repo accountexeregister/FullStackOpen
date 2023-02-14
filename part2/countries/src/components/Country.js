@@ -2,6 +2,7 @@ import Area from './Area.js'
 import Capital from './Capital.js'
 import Languages from './Languages.js'
 import Flag from './Flag.js'
+import Weather from './Weather.js'
 
 const Country = ({country}) => (
     <div>
@@ -12,6 +13,7 @@ const Country = ({country}) => (
         <Languages country={country} />
         <Flag country={country} />
         <h2>Weather in {country.capital.toString()}</h2>
+        <Weather country = {country} />
     </div>
 )
 
