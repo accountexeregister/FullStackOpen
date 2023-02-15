@@ -36,9 +36,18 @@ const App = () => {
   const updatePersons = (event) => {
     event.preventDefault()
     // Checks if persons already has person with name submitted by form
-    const hasPersonWithName = !!(persons.find(person => person.name === newName))
-    if (hasPersonWithName) {
-      alert(`${newName} is already added to the phonebook`)
+    const personWithName = (persons.find(person => person.name === newName))
+    if (!!personWithName) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`))
+      {
+        const updatedPerson = {...personWithName, number: newNumber}
+        axiosService.put(updatedPerson.id, updatedPerson).then(
+          updatedP => {
+            setPersons(persons.map(person => person.id === updatedPerson.id ? updatedPerson : person))
+          }
+        )
+
+      }
       return
     }
     const newPerson = {
@@ -50,17 +59,20 @@ const App = () => {
     }) 
   }
 
-  const deletePerson = (id) => {
-    axiosService.remove(id).then(response =>
-      {
-        setPersons(persons.filter(person => person.id !== id))
-        return response
-      }
-    ).catch(error =>
-      {
-        alert("Already removed")
-        setPersons(persons.filter(person => person.id !== id))
-      })
+  const deletePerson = (id, name) => {
+    if (window.confirm("Delete " + name + " ?"))
+    {
+      axiosService.remove(id).then(response =>
+        {
+          setPersons(persons.filter(person => person.id !== id))
+          return response
+        }
+      ).catch(error =>
+        {
+          alert("Already removed")
+          setPersons(persons.filter(person => person.id !== id))
+        })
+    }
   }
 
   return (
