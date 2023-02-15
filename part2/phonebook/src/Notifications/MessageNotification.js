@@ -1,6 +1,6 @@
-const MessageNotification = ({message}) => {
+const MessageNotification = ({message, error}) => {
     const messageStyle = {
-        color: 'green',
+        color: error ? 'red' : 'green',
         background: 'lightgrey',
         fontSize: 20,
         borderStyle: 'solid',

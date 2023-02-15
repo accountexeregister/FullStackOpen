@@ -12,6 +12,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
   const [message, setMessage] = useState(null)
+  const [updateError, setUpdateError] = useState(false)
 
   const getPersons = () => {
     axiosService.get()
@@ -45,6 +46,7 @@ const App = () => {
         const updatedPerson = {...personWithName, number: newNumber}
         axiosService.put(updatedPerson.id, updatedPerson).then(
           updatedP => {
+            setUpdateError(false)
             setPersons(persons.map(person => person.id === updatedPerson.id ? updatedPerson : person))
             setMessage(`Updated ${updatedPerson.name}`)
             setTimeout(() => setMessage(null), 5000)
@@ -69,7 +71,8 @@ const App = () => {
     if (window.confirm("Delete " + name + " ?"))
     {
       axiosService.remove(id).then(response =>
-        {
+        { 
+          setUpdateError(false)
           setPersons(persons.filter(person => person.id !== id))
           setMessage(`Deleted ${name}`)
           setTimeout(() => setMessage(null), 5000)
@@ -77,7 +80,11 @@ const App = () => {
         }
       ).catch(error =>
         {
-          alert("Already removed")
+          setUpdateError(true)
+          console.log(`Information from ${name} has already been removed from the server`)
+          setMessage(`Information from ${name} has already been removed from the server`)
+          setTimeout(() => setUpdateError(false), 5000)
+          setTimeout(() => setMessage(null), 5000)
           setPersons(persons.filter(person => person.id !== id))
         })
     }
@@ -86,7 +93,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <MessageNotification message = {message}/>
+      <MessageNotification message = {message} error = {updateError}/>
       <Filter filter={filter} updateFilter={updateFilter}/>
       <h2>Add a new</h2>
       <PersonForm updatePersons={updatePersons} newName={newName} updateNewName={updateNewName} newNumber = {newNumber}
