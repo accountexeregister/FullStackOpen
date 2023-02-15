@@ -50,6 +50,19 @@ const App = () => {
     }) 
   }
 
+  const deletePerson = (id) => {
+    axiosService.remove(id).then(response =>
+      {
+        setPersons(persons.filter(person => person.id !== id))
+        return response
+      }
+    ).catch(error =>
+      {
+        alert("Already removed")
+        setPersons(persons.filter(person => person.id !== id))
+      })
+  }
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -58,7 +71,7 @@ const App = () => {
       <PersonForm updatePersons={updatePersons} newName={newName} updateNewName={updateNewName} newNumber = {newNumber}
        updateNewNumber = {updateNewNumber}/>
       <h2>Numbers</h2>
-      <Persons persons={persons} filter={filter}/>
+      <Persons persons={persons} filter={filter} removeFunct={deletePerson}/>
     </div>
   )
 }
