@@ -4,12 +4,14 @@ import Filter from './components/Filter.js'
 import PersonForm from './components/PersonForm.js'
 import Persons from './components/Persons.js'
 import axiosService from './services/AxiosService.js'
+import MessageNotification from './Notifications/MessageNotification.js'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
+  const [message, setMessage] = useState(null)
 
   const getPersons = () => {
     axiosService.get()
@@ -44,6 +46,8 @@ const App = () => {
         axiosService.put(updatedPerson.id, updatedPerson).then(
           updatedP => {
             setPersons(persons.map(person => person.id === updatedPerson.id ? updatedPerson : person))
+            setMessage(`Updated ${updatedPerson.name}`)
+            setTimeout(() => setMessage(null), 5000)
           }
         )
 
@@ -56,6 +60,8 @@ const App = () => {
     }
     axiosService.post(newPerson).then(newP => {
       setPersons(persons.concat(newP)) 
+      setMessage(`Added ${newP.name}`)
+      setTimeout(() => setMessage(null), 5000)
     }) 
   }
 
@@ -65,6 +71,8 @@ const App = () => {
       axiosService.remove(id).then(response =>
         {
           setPersons(persons.filter(person => person.id !== id))
+          setMessage(`Deleted ${name}`)
+          setTimeout(() => setMessage(null), 5000)
           return response
         }
       ).catch(error =>
@@ -78,6 +86,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <MessageNotification message = {message}/>
       <Filter filter={filter} updateFilter={updateFilter}/>
       <h2>Add a new</h2>
       <PersonForm updatePersons={updatePersons} newName={newName} updateNewName={updateNewName} newNumber = {newNumber}
