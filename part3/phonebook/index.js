@@ -10,6 +10,7 @@ morgan.token('postdata', (request, response) => {
 const app = express()
 app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postdata'))
+app.use(express.static('build'))
 
 let persons = 
 [
@@ -97,5 +98,16 @@ app.post('/api/persons', (request, response) => {
     response.json(person)
 })
 
-const PORT = 3001
+app.put('/api/persons/:id', (request, response) => {
+    const personWithId = request.body
+    const id = Number(request.params.id)
+    const updatedPerson = {
+        id,
+        ...personWithId
+    }
+    persons = persons.map(person => person.id === id ? updatedPerson : person)
+    response.json(updatedPerson)
+})
+
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => console.log("Server running on port " + PORT))
