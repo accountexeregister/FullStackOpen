@@ -64,19 +64,19 @@ app.post('/api/persons', (request, response) => {
         return response.status(400).json({ error: 'there must be a number'})
     }
 
-    const personWithRequestName = persons.find(person => person.name === requestName)
-    
-    if (personWithRequestName) {
-        return response.status(400).json({ error: 'name must be unique' })
-    }
+    Number.find({ name: requestName }).then(personsWithRequestName => {
+        console.log(personsWithRequestName)
+        if (personsWithRequestName.length > 0) {
+            return response.status(400).json({ error: 'name must be unique' })
+        }
 
-    const id = Math.floor(Math.random() * 5000000)
-    const newPerson = {
-        id,
-        ...person
-    }
-    persons = persons.concat(newPerson)
-    response.json(person)
+        const newPerson = new Number({
+            ...person
+        })
+        newPerson.save().then(personSaved => {
+            response.json(personSaved)
+        })
+    })
 })
 
 app.put('/api/persons/:id', (request, response) => {
