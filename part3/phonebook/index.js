@@ -14,30 +14,6 @@ app.use(express.json())
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :postdata'))
 app.use(express.static('build'))
 
-let persons = 
-[
-    { 
-      "id": 1,
-      "name": "Arto Hellas", 
-      "number": "040-123456"
-    },
-    { 
-      "id": 2,
-      "name": "Ada Lovelace", 
-      "number": "39-44-5323523"
-    },
-    { 
-      "id": 3,
-      "name": "Dan Abramov", 
-      "number": "12-43-234345"
-    },
-    { 
-      "id": 4,
-      "name": "Mary Poppendieck", 
-      "number": "39-23-6423122"
-    }
-]
-
 app.get('/api/persons', (request, response) => 
     Number.find({}).then(numbers => {
         response.json(numbers)
@@ -45,10 +21,12 @@ app.get('/api/persons', (request, response) =>
 )
 
 app.get('/info', (request, response) => {
-    const firstLine = `<p>Phonebook has info for ${persons.length} people</p>`
+    Number.find({}).then(numbers => {
+    const firstLine = `<p>Phonebook has info for ${numbers.length} people</p>`
     const time = new Date(Date.now()).toString()
     const secondLine = `<p>${time}</p>`
     response.send(firstLine + secondLine)
+    })
 })
 
 app.get('/api/persons/:id', (request, response) => {
