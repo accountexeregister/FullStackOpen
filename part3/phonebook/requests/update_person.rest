@@ -19,6 +19,6 @@ PUT http://localhost:3001/api/persons/123
 Content-Type: application/json
 
 {
-    "number": "333"
+    "number": "333",
 }
 
