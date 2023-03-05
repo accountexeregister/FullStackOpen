@@ -1,0 +1,24 @@
+PUT http://localhost:3001/api/persons/63fc749d638d6ea24a119e9e 
+Content-Type: application/json
+
+{
+
+      "number": "1111111111"
+}
+
+###
+PUT http://localhost:3001/api/persons/63fcfc36e9553eeb7c9aa04f
+Content-Type: application/json
+
+{
+      "number": "2222222"
+}
+
+###
+PUT http://localhost:3001/api/persons/123
+Content-Type: application/json
+
+{
+    "number": "333"
+}
+

@@ -84,15 +84,14 @@ app.post('/api/persons', (request, response) => {
     })
 })
 
-app.put('/api/persons/:id', (request, response) => {
-    const personWithId = request.body
-    const id = Number(request.params.id)
+app.put('/api/persons/:id', (request, response, next) => {
+    const body = request.body
     const updatedPerson = {
-        id,
-        ...personWithId
+        number: body.number
     }
-    persons = persons.map(person => person.id === id ? updatedPerson : person)
-    response.json(updatedPerson)
+    Number.findByIdAndUpdate(request.params.id, updatedPerson, {new: true})
+        .then(updatedP => response.json(updatedP))
+            .catch(error => next(error))
 })
 
 const unknownRoute = (request, response) => {
