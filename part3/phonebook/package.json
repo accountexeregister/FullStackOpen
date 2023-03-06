@@ -10,7 +10,9 @@
     "build:ui": "rm -rf build && cd ../../ && cp -r part2/phonebook/build part3/phonebook",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:produc": "fly logs"
+    "logs:produc": "fly logs",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +23,7 @@
     "morgan": "^1.10.0"
   },
   "devDependencies": {
+    "eslint": "^8.35.0",
     "nodemon": "^2.0.20"
   }
 }

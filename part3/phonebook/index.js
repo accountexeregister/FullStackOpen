@@ -3,11 +3,11 @@ const express = require('express')
 let morgan = require('morgan')
 const Number = require('./models/number.js')
 morgan.token('postdata', (request, response) => {
-    if (request.method !== 'POST') {
-        return ' '
-    }
+	if (request.method !== 'POST') {
+		return ' '
+	}
 
-    return JSON.stringify(request.body)
+	return JSON.stringify(request.body)
 })
 const app = express()
 app.use(express.json())
@@ -15,91 +15,91 @@ app.use(morgan(':method :url :status :res[content-length] - :response-time ms :p
 app.use(express.static('build'))
 
 const errorHandler = (error, request, response, next) => {
-    if (error.name === 'CastError') {
-        return response.status(400).send({ error: 'Not a valid id'})
-    } else if (error.name === 'ValidationError') {
-        return response.status(400).json({ error: error.message})
-    }
+	if (error.name === 'CastError') {
+		return response.status(400).send({ error: 'Not a valid id' })
+	} else if (error.name === 'ValidationError') {
+		return response.status(400).json({ error: error.message })
+	}
 
-    next(error)
+	next(error)
 }
 
-app.get('/api/persons', (request, response) => 
-    Number.find({}).then(numbers => {
-        response.json(numbers)
-    })
+app.get('/api/persons', (request, response) =>
+	Number.find({}).then(numbers => {
+		response.json(numbers)
+	})
 )
 
 app.get('/info', (request, response) => {
-    Number.find({}).then(numbers => {
-    const firstLine = `<p>Phonebook has info for ${numbers.length} people</p>`
-    const time = new Date(Date.now()).toString()
-    const secondLine = `<p>${time}</p>`
-    response.send(firstLine + secondLine)
-    })
+	Number.find({}).then(numbers => {
+		const firstLine = `<p>Phonebook has info for ${numbers.length} people</p>`
+		const time = new Date(Date.now()).toString()
+		const secondLine = `<p>${time}</p>`
+		response.send(firstLine + secondLine)
+	})
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
-    const id = request.params.id
-    Number.findById(id).then(person => {
-        if (person === null) {
-            return response.status(404).end()
-        }
-        response.json(person)
-    }).catch(error => next(error))
+	const id = request.params.id
+	Number.findById(id).then(person => {
+		if (person === null) {
+			return response.status(404).end()
+		}
+		response.json(person)
+	}).catch(error => next(error))
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
-    Number.findByIdAndDelete(request.params.id).then(person => {
-        if (person) {
-            response.status(204).end()
-        } else {
-            response.status(404).send({ error: `person with id ${request.params.id} does not exist`})
-        }
-    }).catch(error => next(error))
+	Number.findByIdAndDelete(request.params.id).then(person => {
+		if (person) {
+			response.status(204).end()
+		} else {
+			response.status(404).send({ error: `person with id ${request.params.id} does not exist` })
+		}
+	}).catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response, next) => {
-    const person = request.body
-    const requestName = person.name
-    if (!requestName) {
-        return response.status(400).json({ error: 'there must be a name' })
-    }
+	const person = request.body
+	const requestName = person.name
+	if (!requestName) {
+		return response.status(400).json({ error: 'there must be a name' })
+	}
 
-    const requestNumber = person.number
-    if (!requestNumber) {
-        return response.status(400).json({ error: 'there must be a number'})
-    }
+	const requestNumber = person.number
+	if (!requestNumber) {
+		return response.status(400).json({ error: 'there must be a number' })
+	}
 
-    Number.find({ name: requestName }).then(personsWithRequestName => {
-        console.log(personsWithRequestName)
-        if (personsWithRequestName.length > 0) {
-            return response.status(400).json({ error: 'name must be unique' })
-        }
+	Number.find({ name: requestName }).then(personsWithRequestName => {
+		console.log(personsWithRequestName)
+		if (personsWithRequestName.length > 0) {
+			return response.status(400).json({ error: 'name must be unique' })
+		}
 
-        const newPerson = new Number({
-            ...person
-        })
-        newPerson.save().then(personSaved => {
-            response.json(personSaved)
-        }).catch(error => next(error))
-    })
+		const newPerson = new Number({
+			...person
+		})
+		newPerson.save().then(personSaved => {
+			response.json(personSaved)
+		}).catch(error => next(error))
+	})
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-    const body = request.body
-    const updatedPerson = {
-        number: body.number
-    }
-    Number.findByIdAndUpdate(request.params.id, updatedPerson, {new: true, runValidators: true, context: 'query'})
-        .then(updatedP => response.json(updatedP))
-            .catch(error => next(error))
+	const body = request.body
+	const updatedPerson = {
+		number: body.number
+	}
+	Number.findByIdAndUpdate(request.params.id, updatedPerson, { new: true, runValidators: true, context: 'query' })
+		.then(updatedP => response.json(updatedP))
+		.catch(error => next(error))
 })
 
 const unknownRoute = (request, response) => {
-    response.status(404).json({error: "unknown route"})
+	response.status(404).json({ error: 'unknown route' })
 }
 app.use(unknownRoute)
 app.use(errorHandler)
 const PORT = process.env.PORT || 3001
-app.listen(PORT, () => console.log("Server running on port " + PORT))
+app.listen(PORT, () => console.log('Server running on port ' + PORT))

@@ -1,2 +1,9 @@
 .env
 node_modules
+.eslintrc.js
+.eslintignore
+.dockerignore
+build
+package.json
+package-lock.json
+.gitignore
