@@ -5,7 +5,10 @@ const url = process.env.DB_URL
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
 const numberSchema = mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        minLength: 3
+    },
     number: String
 })
 

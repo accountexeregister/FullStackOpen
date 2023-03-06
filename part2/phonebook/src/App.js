@@ -64,7 +64,14 @@ const App = () => {
       setPersons(persons.concat(newP)) 
       setMessage(`Added ${newP.name}`)
       setTimeout(() => setMessage(null), 5000)
-    }) 
+    }).catch(error => {
+      console.log(error.response.data.error)
+      setMessage(error.response.data.error)
+      setUpdateError(true)
+      setTimeout(() => setUpdateError(false), 5000)
+      setTimeout(() => setMessage(null), 5000)
+      }
+    )
   }
 
   const deletePerson = (id, name) => {

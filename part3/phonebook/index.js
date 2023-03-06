@@ -17,6 +17,8 @@ app.use(express.static('build'))
 const errorHandler = (error, request, response, next) => {
     if (error.name === 'CastError') {
         return response.status(400).send({ error: 'Not a valid id'})
+    } else if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: error.message})
     }
 
     next(error)
@@ -57,7 +59,7 @@ app.delete('/api/persons/:id', (request, response, next) => {
     }).catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const person = request.body
     const requestName = person.name
     if (!requestName) {
@@ -80,7 +82,7 @@ app.post('/api/persons', (request, response) => {
         })
         newPerson.save().then(personSaved => {
             response.json(personSaved)
-        })
+        }).catch(error => next(error))
     })
 })
 
@@ -89,7 +91,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     const updatedPerson = {
         number: body.number
     }
-    Number.findByIdAndUpdate(request.params.id, updatedPerson, {new: true})
+    Number.findByIdAndUpdate(request.params.id, updatedPerson, {new: true, runValidators: true, context: 'query'})
         .then(updatedP => response.json(updatedP))
             .catch(error => next(error))
 })
