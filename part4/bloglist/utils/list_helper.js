@@ -14,7 +14,7 @@ const totalLikes = (blogs) => {
 
 const favouriteBlog = (blogs) => {
     if (blogs.length == 0) {
-        return null
+        return {}
     }
 
     const reduceFunc = (currentBlog, blog) => {
@@ -43,9 +43,28 @@ const mostBlogs = (blogs) => {
     return blogMost
 }
 
+const mostLikes = (blogs) => {
+    const blogsGrouped = _.groupBy(blogs, (blog) => blog.author)
+    const blogsMapped = _.mapValues(blogsGrouped, (blogs) => {
+            return _.reduce(blogs, (sum, blog) => {
+                    return sum + blog.likes
+                }, 0)
+        }
+    ) 
+    const blogMost = _.reduce(blogsMapped, (result, value, key) => {
+        if (!result.author || value > result.likes) {
+            result.author = key
+            result.likes = value
+        }
+        return result
+    }, {})
+    return blogMost
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favouriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }
