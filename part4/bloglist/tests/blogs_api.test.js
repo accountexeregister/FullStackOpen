@@ -58,6 +58,25 @@ test("Likes property is not missing from request", async () => {
     })
 })
 
+test("400 Bad Request if title or url are missing", async() => {
+    await api
+       .post("/api/blogs")
+        .send({
+            author: "Robert C. Martin",
+            url: "http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html",
+            likes: 2,
+        })
+        .expect(400)
+
+        await api
+        .post("/api/blogs")
+         .send({
+             title: "Type wars",
+             author: "Robert C. Martin",
+             likes: 2,
+         })
+         .expect(400)
+})
 afterAll(async () => {
     await mongoose.connection.close()
 })
