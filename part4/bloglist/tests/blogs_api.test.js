@@ -100,6 +100,32 @@ describe("Deleting blog(s)", () => {
     }, 100000)
 })
 
+describe("Updating blog", () => {
+    test("Update 1 blog", async() => {
+        const initialFirstBlog = blogTestHelper.initialBlogs[1]
+        console.log(initialFirstBlog)
+        let blogs = await blogTestHelper.blogsInDb()
+        const firstBlogId = blogs[1].id
+        await api.put(`/api/blogs/${firstBlogId}`).send({title: initialFirstBlog.title,
+            author: initialFirstBlog.author,
+            url: initialFirstBlog.url,
+            likes: initialFirstBlog.likes + 1
+        }).expect(200)
+
+        blogs = await blogTestHelper.blogsInDb()
+        const firstBlog = blogs.find(blog => blog.id === firstBlogId)
+        expect(firstBlog.likes).toBe(initialFirstBlog.likes + 1)
+    })
+
+    test("Invalid id update", async() => {
+        const id = "saada11d"
+        await api
+                .put(`/api/blogs/${id}`)
+                .send({title: "pop", author: "sdas", url: "http", likes: 2})
+                .expect(400)
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
