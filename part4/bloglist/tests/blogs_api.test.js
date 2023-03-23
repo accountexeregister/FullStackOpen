@@ -77,6 +77,29 @@ test("400 Bad Request if title or url are missing", async() => {
          })
          .expect(400)
 })
+
+describe("Deleting blog(s)", () => {
+    test("Delete 1 blog", async() => {
+        let blogs = await blogTestHelper.blogsInDb()
+        const firstBlogId = blogs[0].id
+        await api  
+                .delete(`/api/blogs/${firstBlogId}`)
+                .expect(204)
+
+        blogs = await blogTestHelper.blogsInDb()
+        const firstBlog = blogs.find(blog => blog.id === firstBlogId)
+        expect(firstBlog).not.toBeDefined()
+        expect(blogs).toHaveLength(blogTestHelper.initialBlogs.length - 1)
+    }, 100000)
+
+    test("Invalid id delete", async() => {
+        const id = "sa1231"
+        await api   
+                .delete(`/api/blogs/${id}`)
+                .expect(400)
+    }, 100000)
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
