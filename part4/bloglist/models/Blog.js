@@ -12,6 +12,9 @@ blogSchema.set('toJSON', {
         returnedBlog.id = returnedBlog._id.toString()
         delete returnedBlog._id
         delete returnedBlog.__v
+        if (returnedBlog.likes === undefined) {
+            returnedBlog.likes = 0
+        }
     }
 })
 

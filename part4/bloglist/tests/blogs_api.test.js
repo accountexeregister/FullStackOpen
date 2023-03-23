@@ -49,6 +49,15 @@ test("Post succesfully creates a new blog post", async () => {
     expect(blogs).toBeDefined()
 })
 
+test("Likes property is not missing from request", async () => {
+    const response = await api
+                        .get("/api/blogs")
+    const blogs = response.body
+    blogs.forEach(blog => {
+        expect(blog.likes).toBeDefined()
+    })
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
