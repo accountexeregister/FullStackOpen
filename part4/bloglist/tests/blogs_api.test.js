@@ -22,6 +22,11 @@ test("Get returns the correct amount of blog posts", async () => {
     expect(blogs).toHaveLength(blogTestHelper.initialBlogs.length)
 })
 
+test("Unique identifier property of the blog posts is named id", async () => {
+    const response = await blogTestHelper.blogsInDb()
+    response.forEach(blog => expect(blog.id).toBeDefined())
+})
+
 afterAll(async () => {
     await mongoose.connection.close()
 })
