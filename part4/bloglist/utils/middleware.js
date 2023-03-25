@@ -9,7 +9,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 const tokenExtractor = (request, response, next) => {
-    if (request.method === 'POST') {
+    if (request.method === 'POST' || request.method === 'DELETE') {
         
         const authorizationString = request.get('Authorization')
         if (authorizationString && authorizationString.startsWith('Bearer ')) {
