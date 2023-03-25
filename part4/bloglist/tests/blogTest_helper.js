@@ -1,11 +1,35 @@
 const Blog = require("./../models/Blog")
 const User = require("./../models/User")
+const bcrypt = require('bcrypt')
+
+
+const initialUsers = [
+    {
+        blogs: [],
+        username: "Michael Chan",
+        password: "JackiefanLover",
+        name: "Michael"
+    },
+    {   
+        blogs: [],
+        username: "Edsger",
+        password: "johncena115",
+        name: "Edgsger W. Dijkstra"
+    },
+    {   
+        blogs: [],
+        username: "Bruce",
+        password: "113eet",
+        name: "BruceLee"
+    },        
+]
 
 const initialBlogs = [
     {
         title: "React patterns",
         author: "Michael Chan",
         url: "https://reactpatterns.com/",
+        likes: 5
     },
     {
         title: "Go To Statement Considered Harmful",
@@ -30,7 +54,10 @@ const blogsInDb = async() => {
 
 const usersInDb = async() => {
     const users = await User.find({})
-    return users.map(user => user.toJSON())
+    return users.map(user => {
+        user.id = user._id.toString()
+        return user
+    })
 }
 
-module.exports = { initialBlogs, blogsInDb, usersInDb }
+module.exports = { initialUsers, initialBlogs, blogsInDb, usersInDb }
