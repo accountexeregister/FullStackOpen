@@ -20,6 +20,7 @@ usersRouter.post('/', async (request, response, next) => {
     )
     try {
         const result = await userToSave.save()
+        console.log(result)
         response.status(201).json(result)
     } catch (error) {
         next(error)
