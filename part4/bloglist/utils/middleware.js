@@ -1,5 +1,9 @@
 const errorHandler = (error, request, response, next) => {
-    response.status(400).end()
+    if (error.name === 'ValidationError') {
+        return response.status(400).json({ error: "Validation error"} )
+    } else {
+        response.status(400).send()
+    }
 }
 
 module.exports = { errorHandler }
